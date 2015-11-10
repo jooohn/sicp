@@ -1,0 +1,6 @@
+(define (a-plus-abs-b a b) ((if (> b 0) + -) a b))
+(a-plus-abs-b 5 -1)
+(a-plus-abs-b 5 1)
+(a-plus-abs-b 5 0)
+
+(if (> b 0) + -) が+ or - の演算子を返す第一級関数のような扱いになっている。

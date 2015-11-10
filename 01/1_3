@@ -1,0 +1,3 @@
+(define (square a) (* a a))
+(define (sum-max-square-take-2 v1 v2 v3)
+        (+ (square (list-ref (sort (list v1 v2 v3) >) 0)) (square (list-ref (sort (list v1 v2 v3) >) 1))))
