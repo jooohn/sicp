@@ -1,0 +1,15 @@
+再帰的:
+(define (fast-expt b n)
+    (define (even? n) (= (remainder n 2) 0))
+    (cond   ((= n 0) 1)
+            ((even? n) (square (fast-expt b (/ n 2))))
+            (else (* b (fast-expt b (- n 1))))))
+
+反復的:
+(define (fast-expt b n)
+    (define (even? n) (= (remainder n 2) 0))
+    (define (fast-expt-iter b n a)
+        (cond   ((= n 0) a)
+                ((even? n) (fast-expt-iter (square b) (/ n 2) a))
+                (else (fast-expt-iter b (- n 1) (* a b)))))
+    (fast-expt-iter b n 1))

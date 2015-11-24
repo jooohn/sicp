@@ -1,0 +1,18 @@
+再帰
+(define (f n) (
+    if (< n 3)
+        n
+        (+  (f      (- n 1))
+            (f (* 2 (- n 2)))
+            (f (* 3 (- n 3))))))
+
+反復
+(define (f n)
+    (define (f-iter a b c count) (
+        if (= count 0)
+            a
+            (f-iter (+ a (* 2 b) (* 3 c)) a b (- count 1))))
+    (if (< n 3)
+        n
+        (f-iter 2 1 0 (- n 2)))
+)
