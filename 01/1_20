@@ -1,0 +1,27 @@
+(gcd 206 40)
+(if (= 40 0)
+    206
+    (gcd 40 (remainder 206 40)))
+(if (= 40 0)
+    206
+    (if (= (remainder 206 40) 0)
+        40
+        (gcd (remainder 206 40) (remainder 40 (remainder (206 40))))))
+(if (= 40 0)
+    206
+    (if (= (remainder 206 40) 0)
+        40
+        (if (remainder 40 (remainder 206 40))
+            (remainder 206 40)
+            (gcd (remainder 40 (remainder (206 40))) (remainder (remainder 206 40) (remainder 40 (remainder (206 40))))))))
+
+0
++ 1     6
++ 3     4
++ 5     2
++ 7     0
+
+2a + 3b + 1
+そもそも展開しきらない: f(n+2) = 2 f(n) + 3 f(n + 1) + 1
+
+適用順序: 4回
