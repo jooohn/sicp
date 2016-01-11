@@ -1,0 +1,15 @@
+(define (accumulate combiner null-value term a next b)
+    (define (iter n result)
+        (if (> n b)
+            result
+            (iter (next n) (combiner result (term n)))))
+    (iter a null-value))
+
+(define (identity i) i)
+(define (next n) (+ n 1))
+
+; 55
+(accumulate + 0 identity 1 next 10)
+
+; !5
+(accumulate * 1 identity 1 next 5)
