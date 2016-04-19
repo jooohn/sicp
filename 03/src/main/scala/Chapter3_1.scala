@@ -1,8 +1,9 @@
 package q.scala
 
-import scala.util.Try
+import scala.util.{Random, Try}
 
 object Chapter3_1 {
+  import Math._
 
   def q3_1 = {
     def makeAccumulator(init: Int): (Int) => Int = {
@@ -48,6 +49,10 @@ object Chapter3_1 {
   def q3_3 = q3_4
 
   def q3_4 = {
+    trait Account {
+      def withDraw(amount: Int, password: Symbol): Try[Int]
+      def deposit(amount: Int, password: Symbol): Try[Int]
+    }
     def makeAccount(balance: Int, password: Symbol) = {
       var _balance = balance
       var failedCount = 0
@@ -90,9 +95,37 @@ object Chapter3_1 {
     }
   }
 
-  trait Account {
-    def withDraw(amount: Int, password: Symbol): Try[Int]
-    def deposit(amount: Int, password: Symbol): Try[Int]
+  def q3_5 = {
+    case class Rect(x1: Int, y1: Int, x2: Int, y2: Int)
+    def estimateIntegral(p: (Int, Int) => Boolean, rect: Rect, trials: Int): Double = {
+      def randUpdate(current: Int) = new Random(current).nextInt().abs
+      def rand(init: Int) = {
+        var current = init
+        () => {
+          current = randUpdate(current)
+          current
+        }
+      }
+      val random = rand(2)
+      def randomInRange(low: Int, high: Int) = low + (random() % (high + 1 - low))
+      def monteCarlo(_trials: Int, experiment: () => Boolean) = {
+        def iter(trialsRemaining: Int, trialsPassed: Int): Double = {
+          if (trialsRemaining == 0) trialsPassed.toDouble / trials
+          else iter(trialsRemaining - 1, trialsPassed + (if (experiment()) 1 else 0))
+        }
+        iter(_trials, 0)
+      }
+      monteCarlo(trials, () => p(randomInRange(rect.x1, rect.x2), randomInRange(rect.y1, rect.y2)))
+    }
+
+    val r = 10
+    val r2 = pow(r, 2)
+    val p = (a: Int, b: Int) => pow(a, 2) + pow(b, 2) <= r2
+    val rect = Rect(-r, -r, r, r)
+    1 to 10 foreach { n =>
+      val pi = estimateIntegral(p, rect, 1000 * n) * 4
+      println(pi)
+    }
   }
 
 }
